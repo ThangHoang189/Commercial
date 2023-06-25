@@ -5,6 +5,7 @@ const GoldPrice = () => {
   const [goldPriceVND, setGoldPriceVND] = useState(0);
   const [goldPriceUSD, setGoldPriceUSD] = useState(0);
   const [exchangeRate, setExchangeRate] = useState(0);
+  const [goldPNJ, setGoldPNJ] = useState([0, 0]);
   const [isLoaded, setIsLoaded] = useState(false);
   const getExchangeRate = async () => {
     const data = (await Axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/vnd.json`)).data;
@@ -26,10 +27,9 @@ const GoldPrice = () => {
   };
 
   const getVNGoldPrice = async () => {
-    const data = (await Axios.get('https://giavang.pnj.com.vn/')).data;
-    const doc = new DOMParser().parseFromString(data, 'application/xml');
-    const price = doc.getElementsByTagName('table')[0].getElementsByTagName('tr')[1].children[3].textContent?.replace('.', '');
-    return price;
+    const data = (await Axios.get('https://webapi.dantri.com.vn/gia-vang')).data;
+    const pnjPrice = data[3].last.prices[3];
+    return [Number.parseFloat(pnjPrice.buyPrice), Number.parseFloat(pnjPrice.sellPrice)];
   };
 
   const calculateGold = async () => {
@@ -39,6 +39,7 @@ const GoldPrice = () => {
     setExchangeRate(rateExchange);
     setGoldPriceUSD(Math.floor(goldPrice));
     setGoldPriceVND(Math.floor(gold));
+    setGoldPNJ(goldVND);
   };
   useEffect(() => {
     if (!isLoaded) {
@@ -49,6 +50,10 @@ const GoldPrice = () => {
 
   return (
     <div>
+      <label>
+        Gia vang (PNJ): {goldPNJ[0].toLocaleString()} - {goldPNJ[1].toLocaleString()}
+      </label>
+      <br />
       <label>Gia vang (VND): {goldPriceVND.toLocaleString()}</label>
       <br />
       <label>Gia vang (USD): {goldPriceUSD.toLocaleString()}</label>
