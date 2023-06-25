@@ -25,8 +25,15 @@ const GoldPrice = () => {
     return Number.parseFloat(data.rates.USD);
   };
 
+  const getVNGoldPrice = async () => {
+    const data = (await Axios.get('https://giavang.pnj.com.vn/')).data;
+    const doc = new DOMParser().parseFromString(data, 'application/xml');
+    const price = doc.getElementsByTagName('table')[0].getElementsByTagName('tr')[1].children[3].textContent?.replace('.', '');
+    return price;
+  };
+
   const calculateGold = async () => {
-    const [goldPrice, rateExchange] = await Promise.all([getGold(), getExchangeRate()]);
+    const [goldPrice, rateExchange, goldVND] = await Promise.all([getGold(), getExchangeRate(), getVNGoldPrice()]);
 
     const gold = (((goldPrice + 1) * 1.01) / 0.82945) * rateExchange + 40000;
     setExchangeRate(rateExchange);
