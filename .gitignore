@@ -362,3 +362,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+Commercial/src/Commercial.Web/database.sqlite
+Commercial/src/Commercial.Web/database.sqlite-shm
+Commercial/src/Commercial.Web/database.sqlite-wal
+Commercial/src/Commercial.Web/log20230519.txt
