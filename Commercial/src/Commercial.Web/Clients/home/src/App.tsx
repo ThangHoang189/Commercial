@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import GoldPrice from './service/goldPriceService';
+import GoldPrice from './services/goldPriceService';
 function App() {
   return (
     <div className="App">
